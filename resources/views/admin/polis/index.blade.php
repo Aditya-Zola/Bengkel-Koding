@@ -25,7 +25,7 @@
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <tr>
-                                <th>Nama Poli</th>
+                                <th>Id</th> <th>Nama Poli</th>
                                 <th>Keterangan</th>
                                 <th style="width: 150px;">Aksi</th>
                             </tr>
@@ -33,9 +33,11 @@
                         <tbody>
                             @forelse ($polis as $poli )
                                 <tr>
+                                    {{-- Kolom data sekarang 4 kolom --}}
+                                    <td>{{ $poli->id }}</td>
                                     <td>{{ $poli->nama_poli }}</td>
                                     <td>{{ $poli->keterangan }}</td>
-                                    <td>
+                                    <td style="width: 150px;">
                                         <a href="{{ route('polis.edit', $poli->id) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>Edit
                                         </a>
@@ -50,8 +52,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-center" colspan="7">
-                                        Belum ada Poli
+                                    <td class="text-center" colspan="4"> Belum ada Data Poli
                                     </td>
                                 </tr>
                             @endforelse
@@ -62,6 +63,7 @@
         </div>
     </div>
     <script>
+        // Script untuk menghilangkan alert/notifikasi setelah 3 detik
         setTimeout(() => {
             const alert = document.getElementById('alert');
             if (alert) alert.remove();

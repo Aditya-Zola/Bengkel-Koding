@@ -1,54 +1,48 @@
-<x-layouts.app title="Data Obat">
+<x-layouts.app title="Jadwal Periksa Dokter">
     <div class="container-fluid px-4 mt-4">
         <div class="row">
             <div class="col-lg-12">
-
+                <h1 class="mb-4">Jadwal Periksa Dokter</h1>
                 {{-- ALERT FLASH MESSAGE --}}
                 @if (session('message'))
-                    <div class="alert alert-{{ session('type', 'success') }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ session('type') ?? 'success' }} alert-dismissible fade show" role="alert">
+                        <strong>{{ session('type') == 'danger' ? 'Error!' : 'Berhasil!' }}</strong>
                         {{ session('message') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-
-                <h1 class="mb-4">Data Obat</h1>
-
-                <a href="{{ route('obat.create') }}" class="btn btn-primary mb-3">
-                    <i class="fas fa-plus"></i> Tambah Obat
+                <a href="{{ route('jadwal-periksa.create') }}" class="btn btn-primary mb-3">
+                    <i class="fas fa-plus"></i> Tambah Jadwal Periksa
                 </a>
-
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <tr>
-                                <th>Id</th>
-                                <th>Nama Obat</th>
-                                <th>Kemasan</th>
-                                <th>Harga</th>
-                                <th style="width: 150px;">Aksi</th>
+                                <th>ID</th>
+                                <th>Hari</th>
+                                <th>Jam Mulai</th>
+                                <th>Jam Selesai</th>
+                                <th style="width: 150px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($obats as $obat)
+                            @forelse ($jadwalPeriksas as $jadwalPeriksa)
                                 <tr>
-                                    <td>{{ $obat->id }}</td>
-                                    <td>{{ $obat->nama_obat }}</td>
-                                    <td>{{ $obat->kemasan }}</td>
-                                    <td>{{ number_format($obat->harga, 0, ',', '.') }}</td>
-                                    <td style="width: 150px;">
-                                        {{-- Tombol Edit --}}
-                                        <a href="{{ route('obat.edit', $obat->id) }}"
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $jadwalPeriksa->hari }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($jadwalPeriksa->jam_mulai)->format('H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($jadwalPeriksa->jam_selesai)->format('H:i') }}</td>
+                                    <td>
+                                        <a href="{{ route('jadwal-periksa.edit', $jadwalPeriksa->id) }}"
                                             class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-
-                                        {{-- Tombol Hapus --}}
-                                        <form action="{{ route('obat.destroy', $obat->id) }}" method="POST"
-                                            style="display: inline-block;">
+                                        <form action="{{ route('jadwal-periksa.destroy', $jadwalPeriksa->id) }}"
+                                            method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin ingin menghapus Data Obat ini?')">
+                                                onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
                                         </form>
@@ -56,25 +50,21 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Belum ada Data Obat</td>
+                                    <td colspan="5" class="text-center">Tidak ada data jadwal periksa.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
-
     <script>
         setTimeout(() => {
             const alert = document.querySelector('.alert');
             if (alert) {
-                alert.classList.remove('show');
-                alert.classList.add('fade');
-                setTimeout(() => alert.remove(), 500);
+                alert.remove();
             }
-        }, 2000);
+        }, 3000);
     </script>
 </x-layouts.app>

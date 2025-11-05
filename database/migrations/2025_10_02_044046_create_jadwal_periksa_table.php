@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('jadwal_periksa', function (Blueprint $table) {
             $table->id();
+
+            // Kolom Wajib untuk Relasi dan Sorting
+            // 1. Foreign Key ke tabel users (untuk id_dokter)
+            $table->foreignId('id_dokter')->constrained('users')->onDelete('cascade');
+            // 2. Kolom Hari (untuk sorting)
+            $table->string('hari');
+            // 3. Jam Mulai dan Jam Selesai
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+
             $table->timestamps();
         });
     }

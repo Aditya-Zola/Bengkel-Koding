@@ -16,7 +16,7 @@ class DokterController extends Controller
     {
         // dimana role adalah dokter
         $dokters = User::where('role', 'dokter')->with('poli')->get();
-        return view('admin.dokter.index', compact('dokter'));
+        return view('dokter.index', compact('dokters'));
     }
 
     /**
@@ -25,7 +25,7 @@ class DokterController extends Controller
     public function create()
     {
         $polis = Poli::all();
-        return view('admin.dokter.create', compact('polis'));
+        return view('dokter.create', compact('polis'));
     }
 
     /**
@@ -70,7 +70,7 @@ class DokterController extends Controller
     {
         // $polis = User::all(); // janggal, kan beneran
         $polis = Poli::all();
-        return view('admin.dokter.edit', compact('dokter', 'polis'));
+        return view('dokter.edit', compact('dokter', 'polis'));
     }
 
     /**
