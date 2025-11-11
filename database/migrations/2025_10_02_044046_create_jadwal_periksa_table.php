@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_periksa', function (Blueprint $table) {
-            $table->id();
+             $table->id();
 
-            // Kolom Wajib untuk Relasi dan Sorting
             // 1. Foreign Key ke tabel users (untuk id_dokter)
             $table->foreignId('id_dokter')->constrained('users')->onDelete('cascade');
             // 2. Kolom Hari (untuk sorting)

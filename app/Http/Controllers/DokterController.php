@@ -14,7 +14,6 @@ class DokterController extends Controller
      */
     public function index()
     {
-        // dimana role adalah dokter
         $dokters = User::where('role', 'dokter')->with('poli')->get();
         return view('dokter.index', compact('dokters'));
     }
@@ -39,7 +38,7 @@ class DokterController extends Controller
             'alamat' => 'required|string',
             'no_ktp' => 'required|string|max:16|unique:users,no_ktp',
             'no_hp' => 'required|string|max:15',
-            'id_poli' => 'required|string|exists:poli,id', // intinya id nya ada di poli
+            'id_poli' => 'required|string|exists:poli,id',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|min:6',
         ]);
@@ -68,28 +67,20 @@ class DokterController extends Controller
      */
     public function edit(User $dokter)
     {
-        // $polis = User::all(); // janggal, kan beneran
         $polis = Poli::all();
         return view('dokter.edit', compact('dokter', 'polis'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     * $dokter adalah route model binding jadi yang harus nya kita buat
-     * $dokter = User::findOrFail($id); kita bisa membuat menjadi parameter, namun jika menggunakan ccara tersebut kita route nya tidak bisa admin/dokter{id}/edit namun seperi admin/dokter/{dokter}/edit
-     */
 
     public function update(Request $request, User $dokter)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
-            // 'no_ktp' => 'required|string|max:16|unique:users,no_ktp',
-            'no_ktp' => 'required|string|max:16|unique:users,no_ktp,' . $dokter->id, // “Email harus unik, tapi jangan hitung email si dokter yang ini.”
+            'no_ktp' => 'required|string|max:16|unique:users,no_ktp,' . $dokter->id,
             'no_hp' => 'required|string|max:15',
-            'id_poli' => 'required|string|exists:poli,id', // intinya id nya ada di poli
-            // 'email' => 'required|string|unique:users,email',
-            'email' => 'required|string|unique:users,email,' . $dokter->id, // No KTP harus unik, tapi jangan hitung NO KTP si dokter yang ini.”
+            'id_poli' => 'required|string|exists:poli,id',
+            'email' => 'required|string|unique:users,email,' . $dokter->id,
             'password' => 'nullable|string|min:6',
         ]);
 
